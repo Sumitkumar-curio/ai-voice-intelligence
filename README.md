@@ -1,12 +1,4 @@
-title: Ai Voice Intelligence
-emoji: 🏃
-colorFrom: green
-colorTo: red
-sdk: gradio
-sdk_version: 5.17.1
-app_file: app.py
-pinned: false
-short_description: 'AI-Driven Voice Intelligence for Sales and Customer Support '
+
 # 🏃 AI Voice Intelligence
 
 
@@ -27,7 +19,15 @@ This application uses OpenAI's Whisper model for **real-time automatic speech re
 ✅ **Fast & Automatic:** Just **record or upload audio**—the app does the rest!  
 ✅ **30-Second Processing:** The app works best with short clips of up to **30 seconds**.
 
----
+title: Ai Voice Intelligence
+emoji: 🏃
+colorFrom: green
+colorTo: red
+sdk: gradio
+sdk_version: 5.17.1
+app_file: app.py
+pinned: false
+short_description: 'AI-Driven Voice Intelligence for Sales and Customer Support
 
 ## 🛠️ Installation
 To run this application locally, install the required dependencies:
