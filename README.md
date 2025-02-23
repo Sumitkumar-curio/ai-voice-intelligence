@@ -9,13 +9,16 @@ pinned: false
 short_description: 'AI-Driven Voice Intelligence for Sales and Customer Support '
 # 🏃 AI Voice Intelligence
 
+
 **AI-Driven Voice Intelligence for Sales and Customer Support**
 
 This application uses OpenAI's Whisper model for **real-time automatic speech recognition (ASR)** and CardiffNLP's Twitter-RoBERTa model for **sentiment analysis**. It allows users to **upload or record audio**, transcribes it to text, and **analyzes sentiment automatically**.
 
 🔗 **[Live Demo](https://huggingface.co/spaces/Sumit404/ai-voice-intelligence)**
 
----
+## 📸 Screenshot
+![App Screenshot](ss_ai.png)
+
 
 ## 🚀 Features
 ✅ **Audio Transcription:** Converts speech into text using OpenAI's Whisper.  
