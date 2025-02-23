@@ -1,29 +1,38 @@
-from fastapi import FastAPI, UploadFile, File
-import whisper
+import gradio as gr
 from transformers import pipeline
-import tempfile
+import torch
 
-app = FastAPI()
+# Load Whisper model and tokenizer
+whisper_model = "openai/whisper-base"
+device = "cuda" if torch.cuda.is_available() else "cpu"
+asr = pipeline("automatic-speech-recognition", model=whisper_model, device=device)
 
-# Load Models
-speech_model = whisper.load_model("base")
-sentiment_analyzer = pipeline("sentiment-analysis")
+# Load Sentiment Analysis model
+sentiment_model = "cardiffnlp/twitter-roberta-base-sentiment-latest"
+sentiment_analyzer = pipeline("sentiment-analysis", model=sentiment_model, device=device)
 
-@app.post("/analyze/")
-async def analyze(audio: UploadFile = File(...)):
-    with tempfile.NamedTemporaryFile(delete=False) as temp:
-        temp.write(await audio.read())
-        temp_path = temp.name
+def transcribe_and_analyze(audio):
+    # Transcribe audio to text
+    transcription = asr(audio)["text"]
+    
+    # Analyze sentiment of the transcription
+    sentiment = sentiment_analyzer(transcription)[0]
+    
+    return transcription, sentiment["label"], sentiment["score"]
 
-    # Transcribe Speech
-    transcription = speech_model.transcribe(temp_path)["text"]
+# Define Gradio interface
+interface = gr.Interface(
+    fn=transcribe_and_analyze,
+    inputs=gr.Audio(sources=["microphone", "upload"], type="filepath", label="Upload or Record Audio"),  # Added upload option
+    outputs=[
+        gr.Textbox(label="Transcription"),
+        gr.Textbox(label="Sentiment"),
+        gr.Number(label="Confidence Score")
+    ],
+    title="Real-Time Audio Transcription and Sentiment Analysis",
+    description="This application transcribes audio input and analyzes the sentiment of the transcribed text.",
+    live=True
+)
 
-    # Analyze Sentiment
-    sentiment = sentiment_analyzer(transcription)
-
-    return {
-        "transcription": transcription,
-        "sentiment": sentiment[0]
-    }
-
-# Run Server: uvicorn app:app --reload
+if __name__ == "__main__":
+    interface.launch()
